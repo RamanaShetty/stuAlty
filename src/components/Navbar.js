@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { subjectData } from "../data/data";
 
 const secondData = [
   { name: "Analog and Digital Electronics", link: "/and" },
@@ -33,16 +32,21 @@ export const Key = "Okay";
 export const Navbar = () => {
   const [secondToggle, setSecondToggle] = useState(false);
   const [thirdToggle, setThirdToggle] = useState(false);
-  
-  const checkIfkeyExist = localStorage.getItem(Key)
-  if(!checkIfkeyExist)
-  {
-    localStorage.setItem(Key,JSON.stringify(subjectData))
-  }
 
   return (
     <div className="nav-bar">
-      <h2>HAHA</h2>
+      <h2>
+        <Link
+          to="/"
+          className="home-Link"
+          onClick={() => {
+            setSecondToggle(false);
+            setThirdToggle(false);
+          }}
+        >
+          HAHA
+        </Link>
+      </h2>
       <ul className="main-ul">
         <li className="main-li">
           <button
@@ -75,12 +79,19 @@ export const Navbar = () => {
           )}
         </li>
         <li className="main-li">
-          <Link to="/datastructures" className="main-Link">
+          <Link
+            to="/datastructures"
+            className="main-Link"
+            onClick={() => {
+              setSecondToggle(false);
+              setThirdToggle(false);
+            }}
+          >
             DSA
           </Link>
         </li>
       </ul>
-      <button>Should Do</button>
+      <button>LOGIN</button>
     </div>
   );
 };

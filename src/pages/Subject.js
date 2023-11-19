@@ -1,22 +1,63 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Key } from "../components/Navbar";
+import { db } from "../configuratoin/firebaseConfig";
+import {
+  getDoc,
+  doc,
+  collection,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 
-const ChapterComponent = (chapterData, subjectId) => {
-  const setProgressOfChapter = (progress) => {
+const ChapterComponent = ({ chapterData, subjectId }) => {
+  const setProgressOfChapter = async (progress) => {
     try {
-      const data = JSON.parse(localStorage.getItem(Key));
+      const docRef = doc(db, "subjects", subjectId);
+      const docSnapshot = await getDoc(docRef);
 
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].subjectId === subjectId) {
-          for (let j = 0; j < data[i].chapters.length; j++) {
-            if (data[i].chapters[j].chapterName === chapterData.chapterName) {
-              data[i].chapters[j].chapterStatus = progress;
-            }
-          }
+      if (docSnapshot.exists()) {
+        const chaptersQuerySnapshot = await getDocs(
+          collection(db, "subjects", subjectId, "chapters")
+        );
+
+        // console.log(chaptersQuerySnapshot);
+
+        const chaptersData = chaptersQuerySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const chapterIndex = chaptersData.findIndex(
+          (chapter) => chapter.chapterName === chapterData.chapterName
+        );
+
+        if (chapterIndex !== -1) {
+          chaptersData[chapterIndex] = {
+            ...chaptersData[chapterIndex],
+            chapterStatus: progress,
+          };
+
+          console.log(chaptersData);
+
+          const chapterDocId = chaptersQuerySnapshot.docs[chapterIndex].id;
+          const chapterDocRef = doc(
+            db,
+            "subjects",
+            subjectId,
+            "chapters",
+            chapterDocId
+          );
+
+          await updateDoc(chapterDocRef, {
+            chapterStatus: progress,
+          });
+
+          // Update the entire 'chapters' array in the Firestore document
+          await updateDoc(docRef, {
+            chapters: chaptersData.map(({ id, ...rest }) => rest),
+          });
         }
       }
-      localStorage.setItem(Key, JSON.stringify(data));
     } catch (err) {
       console.error(err);
     }
@@ -26,7 +67,6 @@ const ChapterComponent = (chapterData, subjectId) => {
     const setValue = chapterData.chapterStatus;
     const selectElement = document.getElementById(chapterData.chapterName);
 
-    console.log(chapterData);
     selectElement.selectedIndex = setValue.toString();
   }, []);
 
@@ -52,7 +92,10 @@ const ChapterComponent = (chapterData, subjectId) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img src="https://takeuforward.org/wp-content/uploads/2022/08/youtube-icon-42001-300x300.png.webp" />
+                <img
+                  src="https://takeuforward.org/wp-content/uploads/2022/08/youtube-icon-42001-300x300.png.webp"
+                  alt="youtube"
+                />
               </a>
             </button>
           </td>
@@ -65,16 +108,56 @@ const ChapterComponent = (chapterData, subjectId) => {
 export const SubjectComponent = () => {
   const location = useLocation();
   const subjectName = location.pathname.substring(1);
-  const subjectData = JSON.parse(localStorage.getItem(Key));
-  const data = subjectData.filter(
-    (record) => record.subjectId === subjectName
-  )[0];
+  const [subjectData, setSubjectData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const subjectRef = doc(db, "subjects", subjectName);
+        const docSnapshot = await getDoc(subjectRef);
+
+        if (docSnapshot?.exists()) {
+          const data = docSnapshot.data();
+          // console.log("Subject Data:", data);
+
+          // Fetch chapters subcollection
+          const chaptersQuerySnapshot = await getDocs(
+            collection(db, "subjects", subjectName, "chapters")
+          );
+          const chaptersData = chaptersQuerySnapshot.docs.map((doc) =>
+            doc.data()
+          );
+
+          setSubjectData({
+            ...data,
+            chapters: chaptersData,
+          });
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, [subjectName]);
+
+  if (!subjectData) {
+    return null;
+  }
+
+  // console.log("Subject Data:", subjectData);
 
   return (
     <>
-      <h1>{data.subjectName}</h1>
+      <h1>{subjectData.subjectName}</h1>
       <section className="main-section">
-        {data.chapters.map((item) => ChapterComponent(item, subjectName))}
+        {subjectData.chapters &&
+          subjectData.chapters.map((item) => (
+            <ChapterComponent
+              key={item.chapterName}
+              chapterData={item}
+              subjectId={subjectName}
+            />
+          ))}
       </section>
     </>
   );
