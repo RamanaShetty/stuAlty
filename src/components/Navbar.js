@@ -21,9 +21,9 @@ const navItem = (item) => {
   return (
     <>
       <li>
-        <Link to={item.link} className="sub-Link">
+        <a href={item.link} className="sub-Link">
           {item.name}
-        </Link>
+        </a>
       </li>
     </>
   );
