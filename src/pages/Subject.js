@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { db } from "../configuratoin/firebaseConfig";
+import { db } from "../configuration/firebaseConfig";
 import {
   getDoc,
   doc,
