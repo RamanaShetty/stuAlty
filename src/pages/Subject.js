@@ -1,7 +1,5 @@
-import { ChapterComponent } from "../components/ChapterComponent";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-<<<<<<< Updated upstream
 import { db } from "../configuratoin/firebaseConfig";
 import {
   getDoc,
@@ -106,10 +104,6 @@ const ChapterComponent = ({ chapterData, subjectId }) => {
     </table>
   );
 };
-=======
-import { db } from "../configuration/firebaseConfig";
-import { getDoc, doc, collection, getDocs } from "firebase/firestore";
->>>>>>> Stashed changes
 
 export const SubjectComponent = () => {
   const location = useLocation();
@@ -149,6 +143,8 @@ export const SubjectComponent = () => {
   if (!subjectData) {
     return null;
   }
+
+  // console.log("Subject Data:", subjectData);
 
   return (
     <>
