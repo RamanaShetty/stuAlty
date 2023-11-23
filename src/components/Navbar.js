@@ -1,37 +1,16 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
-const secondData = [
-  { name: "Analog and Digital Electronics", link: "/and" },
-  { name: "Computer Organization and Architecture", link: "/coa" },
-  { name: "Database Management Systems", link: "/dbms" },
-  { name: "Discrete Mathematics", link: "/dm" },
-  { name: "Object Oriented Programming", link: "/oops" },
-];
-
-const thirdData = [
-  { name: "Automata and Compiler Design", link: "/acd" },
-  { name: "Artificial Intelligence", link: "/ai" },
-  { name: "Computer Networks", link: "cn" },
-  { name: "Operating System", link: "os" },
-];
-
-const navItem = (item) => {
-  return (
-    <>
-      <li>
-        <a href={item.link} className="sub-Link">
-          {item.name}
-        </a>
-      </li>
-    </>
-  );
-};
-export const Key = "Okay";
+import { secondData, thirdData } from "../data";
+import { NavItem } from "./NavItem";
+import { Login } from "./login";
+import { auth } from "../configuration/firebaseConfig";
+import { AfterLogin } from "./afterLogin";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export const Navbar = () => {
   const [secondToggle, setSecondToggle] = useState(false);
   const [thirdToggle, setThirdToggle] = useState(false);
+  const [user] = useAuthState(auth);
 
   return (
     <div className="nav-bar">
@@ -59,7 +38,7 @@ export const Navbar = () => {
           </button>
           {secondToggle && (
             <div className="drop-down">
-              <ul>{secondData.map((item) => navItem(item))}</ul>
+              <ul>{secondData.map((item) => NavItem(item))}</ul>
             </div>
           )}
         </li>
@@ -74,7 +53,7 @@ export const Navbar = () => {
           </button>
           {thirdToggle && (
             <div className="drop-down">
-              <ul>{thirdData.map((item) => navItem(item))}</ul>
+              <ul>{thirdData.map((item) => NavItem(item))}</ul>
             </div>
           )}
         </li>
@@ -91,7 +70,7 @@ export const Navbar = () => {
           </Link>
         </li>
       </ul>
-      <button>LOGIN</button>
+      {user ? <AfterLogin /> : <Login />}
     </div>
   );
 };
