@@ -57,7 +57,7 @@ export const Navbar = () => {
             </div>
           )}
         </li>
-        <li className="main-li">
+        {/* <li className="main-li">
           <Link
             to="/datastructures"
             className="main-Link"
@@ -68,7 +68,7 @@ export const Navbar = () => {
           >
             DSA
           </Link>
-        </li>
+        </li> */}
       </ul>
       {user ? <AfterLogin /> : <Login />}
     </div>

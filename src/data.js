@@ -11,4 +11,5 @@ export const thirdData = [
   { name: "Artificial Intelligence", link: "/ai" },
   { name: "Computer Networks", link: "cn" },
   { name: "Operating System", link: "os" },
+  { name: "Software Testing Methodologies", link: "stm" },
 ];

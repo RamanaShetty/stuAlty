@@ -12,6 +12,7 @@ export const Rout = () => {
       <Route path="/acd" element={<SubjectComponent />}></Route>
       <Route path="/cn" element={<SubjectComponent />}></Route>
       <Route path="/os" element={<SubjectComponent />}></Route>
+      <Route path="/stm" element={<SubjectComponent />}></Route>
       <Route path="/ai" element={<SubjectComponent />}></Route>
       <Route path="/datastructures" element={<SubjectComponent />}></Route>
     </Routes>
