@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 export const UpdateInfo = () => {
   const [chapterName, setChapterName] = useState("");
   const [chapterLink, setChapterLink] = useState("");
-  const [subjectName,setSubjectName] = useState("");
+  const [subjectData,setSubjectData] = useState("");
   const navigate = useNavigate();
 
   const { state } = useLocation();
@@ -25,7 +25,7 @@ export const UpdateInfo = () => {
 
         if (docSnapshot?.exists()) {
           const data = docSnapshot.data();
-          setSubjectName(data.subjectName);
+          setSubjectData(data.subjectName);
         }
       } catch (err) {
         console.log(err);
@@ -67,7 +67,7 @@ export const UpdateInfo = () => {
 
   return (
     <div className="forms">
-      <h2>New topic for {subjectName}</h2>
+      <h2>New topic for {subjectData}</h2>
       <div className="updateForm">
         <label>
           <input
