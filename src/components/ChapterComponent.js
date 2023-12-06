@@ -19,8 +19,6 @@ export const ChapterComponent = ({ chapterData, subjectId }) => {
           collection(db, "subjects", subjectId, "chapters")
         );
 
-        // console.log(chaptersQuerySnapshot);
-
         const chaptersData = chaptersQuerySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),

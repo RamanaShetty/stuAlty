@@ -8,6 +8,7 @@ export const SubjectComponent = () => {
   const location = useLocation();
   const subjectName = location.pathname.substring(1);
   const [subjectData, setSubjectData] = useState(null);
+  const [permissionAdd, setPermissionAdd] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,6 +21,20 @@ export const SubjectComponent = () => {
         alert("Please log in to access the data!!");
         navigate("/");
       } else {
+        const emaill = user.email.slice(0, user.email.indexOf("@"));
+        const userRef = doc(db, "users", emaill);
+        const userSnapshot = await getDoc(userRef);
+
+        if (userSnapshot.exists()) {
+          const userData = userSnapshot.data();
+          const userRole = userData.role;
+
+          if (userRole === "Faculty") {
+            setPermissionAdd(true);
+          } else {
+            setPermissionAdd(false);
+          }
+        }
         fetchData();
       }
     };
@@ -34,7 +49,6 @@ export const SubjectComponent = () => {
 
       if (docSnapshot?.exists()) {
         const data = docSnapshot.data();
-        // console.log("Subject Data:", data);
 
         // Fetch chapters subcollection
         const chaptersQuerySnapshot = await getDocs(
@@ -58,9 +72,21 @@ export const SubjectComponent = () => {
     return null;
   }
 
+  const handleChange = () => {
+    const currentLocation = window.location.pathname;
+    navigate("/update", { state: { currentLocation } });
+  };
+
   return (
     <>
-      <h1 className="subject-name">{subjectData.subjectName}</h1>
+      <div className="sub-add">
+        <h1 className="subject-name">{subjectData.subjectName}</h1>
+        {permissionAdd && (
+          <button className="add-btn" onClick={handleChange}>
+            +
+          </button>
+        )}
+      </div>
       <section className="main-section">
         {subjectData.chapters &&
           subjectData.chapters.map((item) => (

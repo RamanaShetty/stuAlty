@@ -28,8 +28,18 @@
   transition: all 0.3s ease 0s;
 }
 
+span{
+  margin: 0;
+  padding: 0;
+  color: #4be3ac;
+  transition: all 0.3s ease 0s;
+}
+
 .home-Link:hover {
   color: #4be3ac;
+  & span{
+    color: #dddddd;
+  }
 }
 
 .main-ul {
@@ -159,6 +169,73 @@ img {
   width: 50px;
 }
 
-.subject-name{
+.subject-name {
   color: #dddddd;
+}
+
+.sub-add {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-btn {
+  background-color: #4be3ac;
+  border-radius: 50%;
+  padding: 8px 17px;
+  font-size: 20px;
+  color: black;
+}
+
+.add-btn:hover{
+  color: #4be3ac;
+  background-color: #dddddd;
+  box-shadow: 0px 0px 17px 1px #4be3ac;
+}
+
+.forms{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  width: 100%;
+}
+
+.forms h2{
+  color: #dddddd;
+  margin-bottom: 1rem;
+}
+
+.updateForm{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+input{
+  width: 100%;
+  outline: none;
+  border: 3px solid black;
+  border-radius: 4px;
+  padding: 12px 20px;
+  margin-bottom: 1rem;
+  font-size: large;
+  color: #dddddd;
+}
+
+::placeholder{
+  color: #dddddd;
+  opacity: 0.7;
+}
+
+.submitForm{
+  background-color: #4be3ac;
+  color: black;
+  font-weight: bold;
+}
+
+.submitForm:hover{
+  color:#4be3ac;
+  background-color: #dddddd;
 }
