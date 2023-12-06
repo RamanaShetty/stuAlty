@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { SubjectComponent } from "../pages/Subject";
+import { UpdateInfo } from "./UpdateInfo";
 
 export const Rout = () => {
   return (
@@ -14,7 +15,7 @@ export const Rout = () => {
       <Route path="/os" element={<SubjectComponent />}></Route>
       <Route path="/stm" element={<SubjectComponent />}></Route>
       <Route path="/ai" element={<SubjectComponent />}></Route>
-      <Route path="/datastructures" element={<SubjectComponent />}></Route>
+      <Route path="/update" element={<UpdateInfo/>}></Route>
     </Routes>
   );
 };

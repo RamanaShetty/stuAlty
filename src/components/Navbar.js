@@ -23,7 +23,7 @@ export const Navbar = () => {
             setThirdToggle(false);
           }}
         >
-          HAHA
+          stu<span>A</span>lty
         </Link>
       </h2>
       <ul className="main-ul">
