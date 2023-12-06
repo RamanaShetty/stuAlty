@@ -1,5 +1,5 @@
 import "./styling/App.css";
-import { HashRouterRouter as Router } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { Rout } from "./components/Routing";
 
